@@ -23,11 +23,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		// Створюємо масив для зберігання веж
 		var hanoiTowers = [];
+		var bases = [];
 
 		// Створюємо функцію для створення вежі
 		function createTower (x, y, z, color) {
 		  // Створюємо геометрію і матеріал для вежі
-		  var towerGeometry = new THREE.CylinderBufferGeometry (0.1, 0.1, 1, 32);
+		  var towerGeometry = new THREE.CylinderBufferGeometry (0.1, 0.1, 1, 16);
 		  var towerMaterial = new THREE.MeshStandardMaterial ({color: color});
 		  // Створюємо меш для вежі
 		  var tower = new THREE.Mesh (towerGeometry, towerMaterial);
@@ -38,11 +39,33 @@ document.addEventListener("DOMContentLoaded", () => {
 		  // Додаємо вежу до масиву
 		  hanoiTowers.push (tower);
 		}
+	
+		// Створюємо функцію для створення основи
+		function createBase (x, y, z, color) {
+		  // Створюємо геометрію і матеріал для основи
+		  var baseGeometry = new THREE.BoxBufferGeometry (0.5, 0.1, 0.5);
+		  var baseMaterial = new THREE.MeshStandardMaterial ({color: color});
+		  // Створюємо меш для основи
+		  var base = new THREE.Mesh (baseGeometry, baseMaterial);
+		  // Встановлюємо позицію основи
+		  base.position.set (x, y, z);
+		  // Додаємо основу до сцени
+		  scene.add (base);
+		  // Додаємо основу до масиву
+		  bases.push (base);
+		}
 
 		// Створюємо три вежі з різними кольорами і позиціями
 		createTower (-0.5, 0.5, -0.5, 0xff0000); // Червона вежа
 		createTower (0, 0.5, -0.7, 0x00ff00); // Зелена вежа
 		createTower (0.5, 0.5, -0.9, 0x0000ff); // Синя вежа
+		// Створюємо три основи з тими самими кольорами і позиціями, що і вежі
+		for (var i = 0; i < hanoiTowers.length; i++) {
+		  var tower = hanoiTowers [i];
+		  var towerPos = tower.position;
+		  var towerColor = tower.material.color;
+		  createBase (towerPos.x, towerPos.y - 0.55, towerPos.z, towerColor);
+		}
 
        
         	var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
