@@ -27,23 +27,29 @@ document.addEventListener("DOMContentLoaded", () => {
 		var rings = [];
 
 		// Створюємо функцію для створення вежі
+		function createTower (x, y, z, color) {
 		function createTower (x, y, z, radius, height, color) {
 		  // Створюємо геометрію і матеріал для вежі
+		  var towerGeometry = new THREE.CylinderBufferGeometry (0.1, 0.1, 1, 32);
 		  var towerGeometry = new THREE.CylinderBufferGeometry (radius, radius, height, 32);
 		  var towerMaterial = new THREE.MeshStandardMaterial ({color: color});
 		  // Створюємо меш для вежі
 		  var tower = new THREE.Mesh (towerGeometry, towerMaterial);
-		  // Встановлюємо позицію вежі
-		  tower.position.set (x, y, z);
+
+@@ -38,86 +38,86 @@
 		  // Додаємо вежу до сцени
 		  scene.add (tower);
 		  // Додаємо вежу до масиву
+		  hanoiTowers.push (tower);
 		  towers.push (tower);
 		}
+		
 
 		// Створюємо функцію для створення основи
+		function createBase (x, y, z, color) {
 		function createBase (x, y, z, width, height, depth, color) {
 		  // Створюємо геометрію і матеріал для основи
+		  var baseGeometry = new THREE.BoxBufferGeometry (0.5, 0.1, 0.5);
 		  var baseGeometry = new THREE.BoxBufferGeometry (width, height, depth);
 		  var baseMaterial = new THREE.MeshStandardMaterial ({color: color});
 		  // Створюємо меш для основи
@@ -73,27 +79,33 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		// Створюємо три вежі з різними кольорами і позиціями
+		createTower (-0.5, 0.5, -0.5, 0xff0000); // Червона вежа
+		createTower (0, 0.5, -0.7, 0x00ff00); // Зелена вежа
+		createTower (0.5, 0.5, -0.9, 0x0000ff); // Синя вежа
+		
 		createTower (-0.5, 0.5, -0.5, 0.05, 0.5, 0xff0000); // Червона вежа
 		createTower (0, 0.5, -0.7, 0.05, 0.5, 0x00ff00); // Зелена вежа
 		createTower (0.5, 0.5, -0.9, 0.05, 0.5, 0x0000ff); // Синя вежа
 
 		// Створюємо три основи з тими самими кольорами і позиціями, що і вежі
+		for (var i = 0; i < hanoiTowers.length; i++) {
+		  var tower = hanoiTowers [i];
 		for (var i = 0; i < towers.length; i++) {
 		  var tower = towers [i];
 		  var towerPos = tower.position;
 		  var towerColor = tower.material.color;
+		  createBase (towerPos.x, towerPos.y - 0.55, towerPos.z, towerColor);
 		  createBase (towerPos.x, towerPos.y - 0.55, towerPos.z, 0.25, 0.05, 0.25, towerColor);
 		}
 		
 		// Створюємо 7 кілець з різними розмірами і кольорами, які розташовані на першій вежі
-		createRing (-0.5, 0.65, -0.5, 0.075, 0.1, 0xffff00); // Жовте кільце
-		createRing (-0.5, 0.7, 	-0.5, 0.1,   0.125, 0xff00ff); // Рожеве кільце
-		createRing (-0.5, 0.75, -0.5, 0.125, 0.15, 0x00ffff); // Блакитне кільце
-		createRing (-0.5, 0.8, 	-0.5, 0.15,  0.175, 0xff0000); // Червоне кільце
-		createRing (-0.5, 0.85, -0.5, 0.175, 0.2, 0x00ff00); // Зелене кільце
-		createRing (-0.5, 0.9,  -0.5, 0.2,   0.225, 0x0000ff); // Синє кільце
-		createRing (-0.5, 0.95, -0.5, 0.225, 0.25, 0xffffff); // Біле кільце
-		
+		createRing (-0.5, 0.55, -0.5, 0.025, 0.05, 0xffff00); // Жовте кільце
+		createRing (-0.5, 0.6, 	-0.5, 0.05,  0.075, 0xff00ff); // Рожеве кільце
+		createRing (-0.5, 0.65, -0.5, 0.075, 0.1, 0x00ffff); // Блакитне кільце
+		createRing (-0.5, 0.7, 	-0.5, 0.1,   0.125, 0xff0000); // Червоне кільце
+		createRing (-0.5, 0.75, -0.5, 0.125, 0.15, 0x00ff00); // Зелене кільце
+		createRing (-0.5, 0.8, 	-0.5, 0.15,  0.175, 0x0000ff); // Синє кільце
+		createRing (-0.5, 0.85, -0.5, 0.175, 0.2, 0xffffff); // Біле кільце
 
        
         	var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
