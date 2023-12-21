@@ -5,6 +5,20 @@ import {ARButton} from '../js/three/ARButton.js';
 document.addEventListener("DOMContentLoaded", () => {
 	//основна функція
 	const initialize = async() => {
+		// створення сцени з червоним кубом розміром 5 см
+
+	        let scene = new THREE.Scene();
+	        let camera = new THREE.PerspectiveCamera();
+
+		let renderer = new THREE.WebGLRenderer({
+			antialias: true,
+			alpha: true
+		});
+	        renderer.setSize(window.innerWidth, window.innerHeight);
+	        renderer.setPixelRatio(window.devicePixelRatio);
+
+	        document.body.appendChild(renderer.domElement);
+
 		// Додаємо до вашого коду три ханойські вежі
 
 		// Створюємо масив для зберігання веж
@@ -30,6 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		createTower (0, 0.5, -0.7, 0x00ff00); // Зелена вежа
 		createTower (0.5, 0.5, -0.9, 0x0000ff); // Синя вежа
 
+       
+        	var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+        	scene.add(light);
 
 		// повідомлення рушія Three.js про параметри використання WebXR
 		renderer.xr.enabled = true;
