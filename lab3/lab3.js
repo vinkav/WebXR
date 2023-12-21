@@ -61,8 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Створюємо функцію для створення кільця
 		function createRing (x, y, z, innerRadius, outerRadius, color) {
 		  // Створюємо геометрію і матеріал для кільця
-		  var ringGeometry = new THREE.RingBufferGeometry (innerRadius, outerRadius, 32);
-		  var ringMaterial = new THREE.MeshStandardMaterial ({color: color, side: THREE.DoubleSide});
+		  var ringGeometry = new THREE.TorusBufferGeometry (outerRadius, (outerRadius - innerRadius) / 2, 16, 100);
+		  var ringMaterial = new THREE.MeshStandardMaterial ({color: color});
 		  // Створюємо меш для кільця
 		  var ring = new THREE.Mesh (ringGeometry, ringMaterial);
 		  // Встановлюємо позицію і поворот кільця
