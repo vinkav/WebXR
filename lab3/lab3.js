@@ -5,35 +5,31 @@ import {ARButton} from '../js/three/ARButton.js';
 document.addEventListener("DOMContentLoaded", () => {
 	//основна функція
 	const initialize = async() => {
-		// створення сцени з червоним кубом розміром 5 см
+		// Додаємо до вашого коду три ханойські вежі
 
-	        let scene = new THREE.Scene();
-	        let camera = new THREE.PerspectiveCamera();
+		// Створюємо масив для зберігання веж
+		var hanoiTowers = [];
 
-		let renderer = new THREE.WebGLRenderer({
-			antialias: true,
-			alpha: true
-		});
-	        renderer.setSize(window.innerWidth, window.innerHeight);
-	        renderer.setPixelRatio(window.devicePixelRatio);
+		// Створюємо функцію для створення вежі
+		function createTower (x, y, z, color) {
+		  // Створюємо геометрію і матеріал для вежі
+		  var towerGeometry = new THREE.CylinderBufferGeometry (0.1, 0.1, 1, 32);
+		  var towerMaterial = new THREE.MeshStandardMaterial ({color: color});
+		  // Створюємо меш для вежі
+		  var tower = new THREE.Mesh (towerGeometry, towerMaterial);
+		  // Встановлюємо позицію вежі
+		  tower.position.set (x, y, z);
+		  // Додаємо вежу до сцени
+		  scene.add (tower);
+		  // Додаємо вежу до масиву
+		  hanoiTowers.push (tower);
+		}
 
-	        document.body.appendChild(renderer.domElement);
+		// Створюємо три вежі з різними кольорами і позиціями
+		createTower (-0.5, 0.5, -0.5, 0xff0000); // Червона вежа
+		createTower (0, 0.5, -0.7, 0x00ff00); // Зелена вежа
+		createTower (0.5, 0.5, -0.9, 0x0000ff); // Синя вежа
 
-		const cubegeometry = new THREE.BoxGeometry(0.05, 0.05, 0.05);
-		const cubematerial = new THREE.MeshBasicMaterial( {
-			color: 0x00ffff, 
-			transparent: true,
-			opacity: 0.5
-		} );
-
-
-	        let cube = new THREE.Mesh(cubegeometry, cubematerial);
-
-	        cube.position.set(0, 0, -0.3);
-		scene.add(cube);
-       
-        	var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
-        	scene.add(light);
 
 		// повідомлення рушія Three.js про параметри використання WebXR
 		renderer.xr.enabled = true;
