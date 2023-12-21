@@ -27,9 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		var rings = [];
 
 		// Створюємо функцію для створення вежі
-		function createTower (x, y, z, color) {
+		function createTower (x, y, z, radius, height, color) {
 		  // Створюємо геометрію і матеріал для вежі
-		  var towerGeometry = new THREE.CylinderBufferGeometry (0.1, 0.1, 1, 32);
+		  var towerGeometry = new THREE.CylinderBufferGeometry (radius, radius, height, 32);
 		  var towerMaterial = new THREE.MeshStandardMaterial ({color: color});
 		  // Створюємо меш для вежі
 		  var tower = new THREE.Mesh (towerGeometry, towerMaterial);
@@ -38,13 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
 		  // Додаємо вежу до сцени
 		  scene.add (tower);
 		  // Додаємо вежу до масиву
-		  hanoiTowers.push (tower);
+		  towers.push (tower);
 		}
-		
+
 		// Створюємо функцію для створення основи
-		function createBase (x, y, z, color) {
+		function createBase (x, y, z, width, height, depth, color) {
 		  // Створюємо геометрію і матеріал для основи
-		  var baseGeometry = new THREE.BoxBufferGeometry (0.5, 0.1, 0.5);
+		  var baseGeometry = new THREE.BoxBufferGeometry (width, height, depth);
 		  var baseMaterial = new THREE.MeshStandardMaterial ({color: color});
 		  // Створюємо меш для основи
 		  var base = new THREE.Mesh (baseGeometry, baseMaterial);
@@ -73,16 +73,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		// Створюємо три вежі з різними кольорами і позиціями
-		createTower (-0.5, 0.5, -0.5, 0xff0000); // Червона вежа
-		createTower (0, 0.5, -0.7, 0x00ff00); // Зелена вежа
-		createTower (0.5, 0.5, -0.9, 0x0000ff); // Синя вежа
-		
+		createTower (-0.5, 0.5, -0.5, 0.05, 0.5, 0xff0000); // Червона вежа
+		createTower (0, 0.5, -0.7, 0.05, 0.5, 0x00ff00); // Зелена вежа
+		createTower (0.5, 0.5, -0.9, 0.05, 0.5, 0x0000ff); // Синя вежа
+
 		// Створюємо три основи з тими самими кольорами і позиціями, що і вежі
-		for (var i = 0; i < hanoiTowers.length; i++) {
-		  var tower = hanoiTowers [i];
+		for (var i = 0; i < towers.length; i++) {
+		  var tower = towers [i];
 		  var towerPos = tower.position;
 		  var towerColor = tower.material.color;
-		  createBase (towerPos.x, towerPos.y - 0.55, towerPos.z, towerColor);
+		  createBase (towerPos.x, towerPos.y - 0.55, towerPos.z, 0.25, 0.05, 0.25, towerColor);
 		}
 		
 		// Створюємо 7 кілець з різними розмірами і кольорами, які розташовані на першій вежі
