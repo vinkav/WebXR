@@ -75,16 +75,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		// Створюємо три вежі з різними кольорами і позиціями
-		createTower (-0.5, 0.5, -0.5, 0xff0000); // Червона вежа
-		createTower (0, 0.5, -0.7, 0x00ff00); // Зелена вежа
-		createTower (0.5, 0.5, -0.9, 0x0000ff); // Синя вежа
+		createTower (-0.3, 0.25, -0.3, 0.05, 0.5, 0xff0000); // Червона вежа
+		createTower (0, 0.25, -0.4, 0.05, 0.5, 0x00ff00); // Зелена вежа
+		createTower (0.3, 0.25, -0.5, 0.05, 0.5, 0x0000ff); // Синя вежа
 		
 		// Створюємо три основи з тими самими кольорами і позиціями, що і вежі
-		for (var i = 0; i < hanoiTowers.length; i++) {
-		  var tower = hanoiTowers [i];
+		for (var i = 0; i < towers.length; i++) {
+		  var tower = towers [i];
 		  var towerPos = tower.position;
 		  var towerColor = tower.material.color;
-		  createBase (towerPos.x, towerPos.y - 0.55, towerPos.z, towerColor);
+		  createBase (towerPos.x, towerPos.y - 0.275, towerPos.z, 0.25, 0.05, 0.25, towerColor);
 		}
 		
 		// Створюємо 5 кілець з різними розмірами і кольорами, які розташовані на першій вежі
