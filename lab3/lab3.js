@@ -121,21 +121,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		
 		
 		function animate() {
-			if (arButton.isPresenting) {
-				renderer.setAnimationLoop(render);
-			} else {
-				requestAnimationFrame(animate);
-				render();
-			}
-		}
-		function render() {
 			for (let ring of rings) {
 				let time = Date.now() / 10;
 				ring.position.setX = ring.position.setX + 0.1;
 			}
 
 			renderer.render(scene, camera);
-		}
 		
 		animate();
 	}
