@@ -106,7 +106,7 @@ async function initAR() {
 
     function animate() {
         if (xrButton.isPresenting) {
-            renderer.setAnimationLoop(render);
+            renderer.setAnimationLoop(initAR);
         } else {
             requestAnimationFrame(animate);
             render();
