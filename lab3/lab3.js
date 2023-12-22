@@ -94,51 +94,11 @@ document.addEventListener("DOMContentLoaded", () => {
 		createRing (-0.5, 0.45, -0.5, 0.175, 0.2, 0x00ff00); // Зелене кільце
 		createRing (-0.5, 0.4,  -0.5, 0.2,   0.225, 0x0000ff); // Синє кільце
 		createRing (-0.5, 0.35, -0.5, 0.225, 0.25, 0xffffff); // Біле кільце
-
-		// Створюємо функцію, яка піднімає кільце з однієї вежі на іншу
-		function liftRing (ring, fromTower, toTower) {
-		  // Визначаємо висоту, на яку потрібно підняти кільце
-		  var liftHeight = 0.8;
-		  // Визначаємо час, який потрібен для підйому кільця
-		  var liftTime = 1;
-		  // Визначаємо час, який потрібен для переміщення кільця
-		  var moveTime = 2;
-		  // Створюємо об'єкт для анімації кільця
-		  var ringTween = new TWEEN.Tween (ring.position);
-		  // Встановлюємо параметри анімації
-		  ringTween.to ({y: liftHeight}, liftTime * 1000); // Піднімаємо кільце на висоту liftHeight за час liftTime
-		  ringTween.onComplete (function () { // Коли кільце піднято
-			// Створюємо об'єкт для анімації кільця
-			var ringTween = new TWEEN.Tween (ring.position);
-			// Встановлюємо параметри анімації
-			ringTween.to ({x: toTower.position.x, z: toTower.position.z}, moveTime * 1000); // Переміщаємо кільце на позицію toTower за час moveTime
-			ringTween.onComplete (function () { // Коли кільце переміщено
-			  // Створюємо об'єкт для анімації кільця
-			  var ringTween = new TWEEN.Tween (ring.position);
-			  // Встановлюємо параметри анімації
-			  ringTween.to ({y: 0.5 + toTower.children.length * 0.05}, liftTime * 1000); // Опускаємо кільце на висоту 0.5 + кількість кілець на toTower * 0.05 за час liftTime
-			  ringTween.onComplete (function () { // Коли кільце опущено
-				// Видаляємо кільце з fromTower
-				fromTower.remove (ring);
-				// Додаємо кільце до toTower
-				toTower.add (ring);
-			  });
-			  // Запускаємо анімацію
-			  ringTween.start ();
-			});
-			// Запускаємо анімацію
-			ringTween.start ();
-		  });
-		  // Запускаємо анімацію
-		  ringTween.start ();
-		  renderer.render(scene, camera);
-		}
-		
-
-		liftRing(rings[0], towers[0], towers[1]);
        
-        	var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
-        	scene.add(light);
+        var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+        scene.add(light);
+		
+		
 
 		// повідомлення рушія Three.js про параметри використання WebXR
 		renderer.xr.enabled = true;
@@ -158,6 +118,26 @@ document.addEventListener("DOMContentLoaded", () => {
 		);
 		arButton.textContent = "Увійти до WebXR";
 		document.body.appendChild(arButton);
+		
+		
+		function animate() {
+			if (arButton.isPresenting) {
+				renderer.setAnimationLoop(render);
+			} else {
+				requestAnimationFrame(animate);
+				render();
+			}
+		}
+		function render() {
+			for (let ring of rings) {
+				let time = Date.now() / 10;
+				ring.position.setX = ring.position.setX + 0.1;
+			}
+
+			renderer.render(scene, camera);
+		}
+		
+		animate();
 	}
 
 	initialize(); // розпочати роботу
