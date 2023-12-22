@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		  var tower = towers [i];
 		  var towerPos = tower.position;
 		  var towerColor = tower.material.color;
-		  createBase (towerPos.x, towerPos.y - 0.55, towerPos.z, 0.25, 0.05, 0.25, towerColor);
+		  createBase (towerPos.x, towerPos.y - 0.25, towerPos.z, 0.25, 0.05, 0.25, towerColor);
 		}
 		
 		// Створюємо 7 кілець з різними розмірами і кольорами, які розташовані на першій вежі
@@ -94,6 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		createRing (-0.5, 0.7,  -0.5, 0.2,   0.225, 0x0000ff); // Синє кільце
 		createRing (-0.5, 0.65, -0.5, 0.225, 0.25, 0xffffff); // Біле кільце
 
+
+		
        
         	var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
         	scene.add(light);
