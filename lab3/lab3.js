@@ -1,5 +1,6 @@
 import * as THREE from '../js/three/three.module.js';
 import {ARButton} from '../js/three/ARButton.js';
+import TWEEN from 'https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.5.0/dist/tween.esm.js';
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -94,8 +95,47 @@ document.addEventListener("DOMContentLoaded", () => {
 		createRing (-0.5, 0.4,  -0.5, 0.2,   0.225, 0x0000ff); // Синє кільце
 		createRing (-0.5, 0.35, -0.5, 0.225, 0.25, 0xffffff); // Біле кільце
 
+		// Створюємо функцію, яка піднімає кільце з однієї вежі на іншу
+		function liftRing (ring, fromTower, toTower) {
+		  // Визначаємо висоту, на яку потрібно підняти кільце
+		  var liftHeight = 0.8;
+		  // Визначаємо час, який потрібен для підйому кільця
+		  var liftTime = 1;
+		  // Визначаємо час, який потрібен для переміщення кільця
+		  var moveTime = 2;
+		  // Створюємо об'єкт для анімації кільця
+		  var ringTween = new TWEEN.Tween (ring.position);
+		  // Встановлюємо параметри анімації
+		  ringTween.to ({y: liftHeight}, liftTime * 1000); // Піднімаємо кільце на висоту liftHeight за час liftTime
+		  ringTween.onComplete (function () { // Коли кільце піднято
+			// Створюємо об'єкт для анімації кільця
+			var ringTween = new TWEEN.Tween (ring.position);
+			// Встановлюємо параметри анімації
+			ringTween.to ({x: toTower.position.x, z: toTower.position.z}, moveTime * 1000); // Переміщаємо кільце на позицію toTower за час moveTime
+			ringTween.onComplete (function () { // Коли кільце переміщено
+			  // Створюємо об'єкт для анімації кільця
+			  var ringTween = new TWEEN.Tween (ring.position);
+			  // Встановлюємо параметри анімації
+			  ringTween.to ({y: 0.5 + toTower.children.length * 0.05}, liftTime * 1000); // Опускаємо кільце на висоту 0.5 + кількість кілець на toTower * 0.05 за час liftTime
+			  ringTween.onComplete (function () { // Коли кільце опущено
+				// Видаляємо кільце з fromTower
+				fromTower.remove (ring);
+				// Додаємо кільце до toTower
+				toTower.add (ring);
+				// Виводимо повідомлення про успішне переміщення кільця
+				console.log ("Ring moved from " + fromTower.name + " to " + toTower.name);
+			  });
+			  // Запускаємо анімацію
+			  ringTween.start ();
+			});
+			// Запускаємо анімацію
+			ringTween.start ();
+		  });
+		  // Запускаємо анімацію
+		  ringTween.start ();
+		}
 
-		
+		liftRing (rings[0], towers[0], towers[1]);
        
         	var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
         	scene.add(light);
