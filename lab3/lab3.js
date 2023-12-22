@@ -122,8 +122,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		
 		function animate() {
 			for (let ring of rings) {
-				let time = Date.now() / 10;
-				ring.position.setX = ring.position.setX + 0.1;
+				//let time = Date.now() / 10;
+				ring.position.setX = ring.position.setX + 0.5;
 			}
 
 			renderer.render(scene, camera);
