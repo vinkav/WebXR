@@ -93,7 +93,8 @@ async function initAR() {
         var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
         scene.add(light);
 		
-		
+	const main = createMain();
+    scene.add(main);
 		
 
 	const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 20);
@@ -149,6 +150,12 @@ async function initAR() {
 			//renderer.render(scene, camera);
         
     }
+	
+	function createMain() {
+		const main = new THREE.Object3D();
+		main.userData = { angle: 0 };
+		return main;
+	}
 
     animate(5000);
 }
