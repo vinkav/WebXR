@@ -123,7 +123,7 @@ async function initAR() {
 			rings[5].position.set(-0.5, rings[5].position.y+0.005, -2.5);
 			rings[6].position.set(-0.5, rings[6].position.y+0.005, -2.5);
 		}
-			renderer.render(scene, camera);
+		renderer.render(scene, camera);
 		
 		
 		if (rings[6].position.y >= 1.05 && rings[0].position.x < 0 ){
@@ -136,7 +136,7 @@ async function initAR() {
 			rings[6].position.set(rings[6].position.x+0.01/2, rings[6].position.y, -2.5);
 			renderer.render(scene, camera);
 		}
-		//renderer.render(scene, camera);
+		renderer.render(scene, camera);
 		
 		if (rings[0].position.x >= 0 && rings[0].position.y > 0.65) {
 			rings[0].position.set(rings[0].position.x, rings[0].position.y-0.005, -2.5);
@@ -147,7 +147,7 @@ async function initAR() {
 			rings[5].position.set(rings[5].position.x, rings[5].position.y-0.005, -2.5);
 			rings[6].position.set(rings[6].position.x, rings[6].position.y-0.005, -2.5);
 		}
-			//renderer.render(scene, camera);
+		renderer.render(scene, camera);
         
     }
 	
