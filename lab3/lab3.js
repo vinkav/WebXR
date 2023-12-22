@@ -1,24 +1,19 @@
 import * as THREE from '../js/three/three.module.js';
 import {ARButton} from '../js/three/ARButton.js';
-import TWEEN from 'https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.5.0/dist/tween.esm.js';
 
 
 document.addEventListener("DOMContentLoaded", () => {
-	//основна функція
-	const initialize = async() => {
-	// створення сцени з червоним кубом розміром 5 см
+    const start = async () => {
+        await initAR();
+    };
+    start();
+});
 
-		let scene = new THREE.Scene();
-		let camera = new THREE.PerspectiveCamera();
+async function initAR() {
+    const xrButton = ARButton.createButton(new THREE.WebGLRenderer());
+    document.body.appendChild(xrButton);
 
-		let renderer = new THREE.WebGLRenderer({
-			antialias: true,
-			alpha: true
-		});
-	        renderer.setSize(window.innerWidth, window.innerHeight);
-	        renderer.setPixelRatio(window.devicePixelRatio);
-
-	        document.body.appendChild(renderer.domElement);
+    const scene = new THREE.Scene();
 
 		// Створюємо масив для зберігання веж
 		var towers = [];
@@ -74,9 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		// Створюємо три вежі з різними кольорами і позиціями
-		createTower (-0.5, 0.5, -0.5, 0.05, 0.5, 0xff0000); // Червона вежа
-		createTower (0, 0.5, -0.5, 0.05, 0.5, 0x00ff00); // Зелена вежа
-		createTower (0.5, 0.5, -0.5, 0.05, 0.5, 0x0000ff); // Синя вежа
+		createTower (-0.5, 0.5, -2.5, 0.05, 0.5, 0xff0000); // Червона вежа
+		createTower (0, 0.5, -2.5, 0.05, 0.5, 0x00ff00); // Зелена вежа
+		createTower (0.5, 0.5, -2.5, 0.05, 0.5, 0x0000ff); // Синя вежа
 
 		// Створюємо три основи з тими самими кольорами і позиціями, що і вежі
 		for (var i = 0; i < towers.length; i++) {
@@ -87,49 +82,73 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 		
 		// Створюємо 7 кілець з різними розмірами і кольорами, які розташовані на першій вежі
-		createRing (-0.5, 0.65, -0.5, 0.075, 0.1, 0xffff00); // Жовте кільце
-		createRing (-0.5, 0.6, 	-0.5, 0.1,   0.125, 0xff00ff); // Рожеве кільце
-		createRing (-0.5, 0.55, -0.5, 0.125, 0.15, 0x00ffff); // Блакитне кільце
-		createRing (-0.5, 0.5, 	-0.5, 0.15,  0.175, 0xff0000); // Червоне кільце
-		createRing (-0.5, 0.45, -0.5, 0.175, 0.2, 0x00ff00); // Зелене кільце
-		createRing (-0.5, 0.4,  -0.5, 0.2,   0.225, 0x0000ff); // Синє кільце
-		createRing (-0.5, 0.35, -0.5, 0.225, 0.25, 0xffffff); // Біле кільце
+		createRing (-0.5, 0.65, -2.5, 0.075, 0.1, 0xffff00); // Жовте кільце
+		createRing (-0.5, 0.6, 	-2.5, 0.1,   0.125, 0xff00ff); // Рожеве кільце
+		createRing (-0.5, 0.55, -2.5, 0.125, 0.15, 0x00ffff); // Блакитне кільце
+		createRing (-0.5, 0.5, 	-2.5, 0.15,  0.175, 0xff0000); // Червоне кільце
+		createRing (-0.5, 0.45, -2.5, 0.175, 0.2, 0x00ff00); // Зелене кільце
+		createRing (-0.5, 0.4,  -2.5, 0.2,   0.225, 0x0000ff); // Синє кільце
+		createRing (-0.5, 0.35, -2.5, 0.225, 0.25, 0xffffff); // Біле кільце
        
         var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
         scene.add(light);
 		
 		
-
-		// повідомлення рушія Three.js про параметри використання WebXR
-		renderer.xr.enabled = true;
-
-		// перевірка запуску та завершення сесії WebXR
-		renderer.xr.addEventListener("sessionstart", (evt) => {
-			renderer.setAnimationLoop(() => {
-			    renderer.render(scene, camera);
-			});
-			});
-
-
-		const arButton = ARButton.createButton(renderer, {
-				optionalFeatures: ["dom-overlay"],
-				domOverlay: {root: document.body},
-			}
-		);
-		arButton.textContent = "Увійти до WebXR";
-		document.body.appendChild(arButton);
 		
-		
-		function animate() {
-			for (let ring of rings) {
-				//let time = Date.now() / 10;
-				ring.position.setX = ring.position.setX + 0.5;
-			}
 
+	const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 20);
+    camera.position.set(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    function animate() {
+        if (xrButton.isPresenting) {
+            renderer.setAnimationLoop(render);
+        } else {
+            requestAnimationFrame(animate);
+            render();
+        }
+    }
+
+    function render() {
+		if (rings[0].position.y < 1.55 && rings[0].position.x < 0 ) {
+			rings[0].position.set(-0.5, rings[0].position.y+0.005, -2.5);
+			rings[1].position.set(-0.5, rings[1].position.y+0.005, -2.5);
+			rings[2].position.set(-0.5, rings[2].position.y+0.005, -2.5);
+			rings[3].position.set(-0.5, rings[3].position.y+0.005, -2.5);
+			rings[4].position.set(-0.5, rings[4].position.y+0.005, -2.5);
+			rings[5].position.set(-0.5, rings[5].position.y+0.005, -2.5);
+			rings[6].position.set(-0.5, rings[6].position.y+0.005, -2.5);
+		}
 			renderer.render(scene, camera);
 		
-		animate();
-	}
+		
+		if (rings[6].position.y >= 1.05 && rings[0].position.x < 0 ){
+			rings[0].position.set(rings[0].position.x+0.01/2, rings[0].position.y, -2.5);
+			rings[1].position.set(rings[1].position.x+0.01, rings[1].position.y, -2.5);
+			rings[2].position.set(rings[2].position.x+0.01/2, rings[2].position.y, -2.5);
+			rings[3].position.set(rings[3].position.x+0.01, rings[3].position.y, -2.5);
+			rings[4].position.set(rings[4].position.x+0.01/2, rings[4].position.y, -2.5);
+			rings[5].position.set(rings[5].position.x+0.01, rings[5].position.y, -2.5);
+			rings[6].position.set(rings[6].position.x+0.01/2, rings[6].position.y, -2.5);
+			renderer.render(scene, camera);
+		}
+		//renderer.render(scene, camera);
+		
+		if (rings[0].position.x >= 0 && rings[0].position.y > 0.65) {
+			rings[0].position.set(rings[0].position.x, rings[0].position.y-0.005, -2.5);
+			rings[1].position.set(rings[1].position.x, rings[1].position.y-0.005, -2.5);
+			rings[2].position.set(rings[2].position.x, rings[2].position.y-0.005, -2.5);
+			rings[3].position.set(rings[3].position.x, rings[3].position.y-0.005, -2.5);
+			rings[4].position.set(rings[4].position.x, rings[4].position.y-0.005, -2.5);
+			rings[5].position.set(rings[5].position.x, rings[5].position.y-0.005, -2.5);
+			rings[6].position.set(rings[6].position.x, rings[6].position.y-0.005, -2.5);
+		}
+			//renderer.render(scene, camera);
+        
+    }
 
-	initialize(); // розпочати роботу
-});
+    animate(5000);
+}
