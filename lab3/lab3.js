@@ -134,9 +134,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		  renderer.render(scene, camera);
 		}
 		
-		const renderer = new THREE.WebGLRenderer({ antialias: true });
-		renderer.setSize(window.innerWidth, window.innerHeight);
-		document.body.appendChild(renderer.domElement);
 
 		liftRing(rings[0], towers[0], towers[1]);
        
