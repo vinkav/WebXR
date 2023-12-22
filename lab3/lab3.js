@@ -122,8 +122,6 @@ document.addEventListener("DOMContentLoaded", () => {
 				fromTower.remove (ring);
 				// Додаємо кільце до toTower
 				toTower.add (ring);
-				// Виводимо повідомлення про успішне переміщення кільця
-				console.log ("Ring moved from " + fromTower.name + " to " + toTower.name);
 			  });
 			  // Запускаємо анімацію
 			  ringTween.start ();
@@ -135,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		  ringTween.start ();
 		}
 
-		liftRing (rings[0], towers[0], towers[1]);
+		liftRing(rings[0], towers[0], towers[1]);
        
         	var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
         	scene.add(light);
