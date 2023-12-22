@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		  var tower = towers [i];
 		  var towerPos = tower.position;
 		  var towerColor = tower.material.color;
-		  createBase (towerPos.x, towerPos.y, towerPos.z, 0.25, 0.05, 0.25, towerColor);
+		  createBase (towerPos.x, towerPos.y - 0.25, towerPos.z, 0.25, 0.05, 0.25, towerColor);
 		}
 		
 		// Створюємо 7 кілець з різними розмірами і кольорами, які розташовані на першій вежі
