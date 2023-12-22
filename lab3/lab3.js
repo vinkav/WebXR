@@ -104,11 +104,11 @@ document.addEventListener("DOMContentLoaded", () => {
 		renderer.xr.enabled = true;
 
 		// перевірка запуску та завершення сесії WebXR
-		renderer.xr.addEventListener("sessionstart", (evt) => {
-			renderer.setAnimationLoop(() => {
-			    renderer.render(scene, camera);
-			});
-			});
+		//renderer.xr.addEventListener("sessionstart", (evt) => {
+		//	renderer.setAnimationLoop(() => {
+		//	    renderer.render(scene, camera);
+		//	});
+		//	});
 
 
 		const arButton = ARButton.createButton(renderer, {
