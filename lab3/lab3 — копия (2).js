@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
 async function initAR() {
     const xrButton = ARButton.createButton(new THREE.WebGLRenderer());
     document.body.appendChild(xrButton);
-	
-		const scene = new THREE.Scene();
+
+    const scene = new THREE.Scene();
 
 		// Створюємо масив для зберігання веж
 		var towers = [];
@@ -51,7 +51,6 @@ async function initAR() {
 		  rings.push (ring);
 		}
 
-		function create(){
 		// Створюємо три вежі з різними кольорами і позиціями
 		createTower (-0.5, 0.5, -1.5, 0.05, 0.5, 0xffffff); // Червона вежа
 		createTower (0, 0.5, -1.5, 0.05, 0.5, 0x0000ff); // Зелена вежа
@@ -68,16 +67,13 @@ async function initAR() {
        
         var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
         scene.add(light);
-		}
 		
 	const main = createMain();
     scene.add(main);
 		
-	
+
 	const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 20);
     camera.position.set(0, 0, 0);
-	
-	create();
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -85,10 +81,11 @@ async function initAR() {
 
     function animate() {
         if (xrButton.isPresenting) {
-			
+			initAR();
             renderer.setAnimationLoop(render);
         } else {
             requestAnimationFrame(animate);
+            //initAR();
 			render();
         }
     }
