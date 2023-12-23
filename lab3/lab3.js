@@ -3,17 +3,24 @@ import {ARButton} from '../js/three/ARButton.js';
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const start = async () => {
-        await initAR();
-    };
-    start();
-});
+	//основна функція
+	const initialize = async() => {
+		// створення сцени з червоним кубом розміром 5 см
 
-async function initAR() {
-    const xrButton = ARButton.createButton(new THREE.WebGLRenderer());
-    document.body.appendChild(xrButton);
-	
-		const scene = new THREE.Scene();
+	    let scene = new THREE.Scene();
+	    let camera = new THREE.PerspectiveCamera();
+
+		let renderer = new THREE.WebGLRenderer({
+			antialias: true,
+			alpha: true
+		});
+	    renderer.setSize(window.innerWidth, window.innerHeight);
+	    renderer.setPixelRatio(window.devicePixelRatio);
+
+	    document.body.appendChild(renderer.domElement);
+
+		// повідомлення рушія Three.js про параметри використання WebXR
+		renderer.xr.enabled = true;
 
 		// Створюємо масив для зберігання веж
 		var towers = [];
@@ -72,16 +79,8 @@ async function initAR() {
 		
 	const main = createMain();
     scene.add(main);
-		
-	
-	const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 20);
-    camera.position.set(0, 0, 0);
 	
 	create();
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
 
     function animate() {
         if (xrButton.isPresenting) {
@@ -127,7 +126,8 @@ async function initAR() {
 			rings[5].position.set(rings[5].position.x, rings[5].position.y-0.005, -1.5);
 			rings[6].position.set(rings[6].position.x, rings[6].position.y-0.005, -1.5);
 		}
-		renderer.render(scene, camera);
+		
+
         
     }
 	
@@ -137,5 +137,23 @@ async function initAR() {
 		return main;
 	}
 
-    animate(5000);
-}
+		// перевірка запуску та завершення сесії WebXR
+		renderer.xr.addEventListener("sessionstart", (evt) => {
+				renderer.setAnimationLoop(() => {
+				
+			    renderer.render(scene, camera);
+			}); 
+		});
+
+
+		const arButton = ARButton.createButton(renderer, {
+				optionalFeatures: ["dom-overlay"],
+				domOverlay: {root: document.body},
+			}
+		);
+		arButton.textContent = "Увійти до WebXR";
+		document.body.appendChild(arButton);
+	}
+
+	initialize(); // розпочати роботу
+});
